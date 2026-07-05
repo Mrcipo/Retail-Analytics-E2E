@@ -1,0 +1,22 @@
+# --- API / ingesta ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+python-dotenv==1.0.1
+
+# --- Procesamiento de datos ---
+pandas==2.2.2
+polars==1.7.1
+pyarrow==17.0.0
+requests==2.32.3
+
+# --- Base de datos / dbt ---
+duckdb==1.1.0
+dbt-core==1.8.7
+dbt-duckdb==1.8.3
+
+# --- Calidad y logging ---
+python-json-logger==2.0.7
+
+# --- Testing ---
+pytest==8.3.3

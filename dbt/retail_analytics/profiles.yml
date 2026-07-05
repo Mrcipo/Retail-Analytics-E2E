@@ -1,0 +1,10 @@
+retail_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "data/retail_analytics.duckdb"
+      threads: 4
+      extensions:
+        - httpfs   # necesario para leer Parquet remoto de Open Food Facts
+        - parquet

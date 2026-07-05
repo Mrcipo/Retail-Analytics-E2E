@@ -1,0 +1,71 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: afip_padron
+        columns:
+          - name: cuit
+            description: "CUIT del contribuyente"
+          - name: razon_social
+            description: "Razón social o nombre del contribuyente"
+          - name: condicion_iva
+            description: "Condición frente al IVA"
+          - name: domicilio_fiscal
+            description: "Domicilio fiscal declarado"
+          - name: actividad_principal
+            description: "Actividad económica principal (código AFIP)"
+          - name: fecha_inscripcion
+            description: "Fecha de inscripción en AFIP (VARCHAR, formato YYYY-MM-DD o similar)"
+          - name: _ingested_at
+            description: "Timestamp de ingesta"
+
+      - name: off_products
+        columns:
+          - name: code
+            description: "Código de barras EAN del producto"
+          - name: product_name
+            description: "Nombre del producto"
+          - name: categories
+            description: "Categorías del producto"
+          - name: brands
+            description: "Marcas del producto"
+          - name: countries
+            description: "Países donde está disponible"
+          - name: last_modified_t
+            description: "Timestamp de última modificación (epoch Unix Int64)"
+          - name: _ingested_at
+            description: "Timestamp de ingesta"
+
+      - name: tiendanube_orders
+        columns:
+          - name: order_id
+            description: "ID único de la orden"
+          - name: store_id
+            description: "ID de la tienda"
+          - name: customer_id
+            description: "ID del cliente"
+          - name: customer_name
+            description: "Nombre del cliente"
+          - name: customer_email
+            description: "Email del cliente"
+          - name: created_at
+            description: "Fecha y hora de creación de la orden"
+          - name: total
+            description: "Total de la orden"
+          - name: _received_at
+            description: "Timestamp de recepción del webhook"
+
+      - name: tiendanube_order_lines
+        columns:
+          - name: order_id
+            description: "ID de la orden (FK)"
+          - name: product_code
+            description: "Código EAN del producto (FK a raw.off_products.code)"
+          - name: product_name
+            description: "Nombre del producto al momento de la orden"
+          - name: quantity
+            description: "Cantidad"
+          - name: unit_price
+            description: "Precio unitario"

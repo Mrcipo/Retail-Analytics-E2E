@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: retail_postgres
+    environment:
+      POSTGRES_USER: retail_admin
+      POSTGRES_PASSWORD: retail_pass
+      POSTGRES_DB: retail_analytics
+    ports:
+      - "5432:5451"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

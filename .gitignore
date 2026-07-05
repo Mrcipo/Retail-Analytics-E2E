@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/raw/*
+!data/raw/.gitkeep
+data/*.duckdb
+data/control/logs/
+dbt/**/dbt.log
+dbt/retail_analytics/target/
+dbt/retail_analytics/dbt_packages/
+dbt/retail_analytics/logs/
+dbt/retail_analytics/.user.yml
+.DS_Store

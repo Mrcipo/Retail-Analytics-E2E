@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: stg_suppliers
+    description: "Contribuyentes del padrón AFIP, limpiados y tipados"
+    columns:
+      - name: cuit
+        description: "CUIT del contribuyente sin guiones"
+        tests:
+          - unique
+          - not_null
+      - name: razon_social
+        description: "Razón social"
+      - name: condicion_iva
+        description: "Condición IVA normalizada a mayúsculas"
+      - name: fecha_inscripcion
+        description: "Fecha de inscripción casteada a DATE"
+
+  - name: stg_products
+    description: "Productos de Open Food Facts, con epoch convertido a timestamp"
+    columns:
+      - name: code
+        description: "Código EAN del producto"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "Nombre del producto limpiado"
+      - name: last_modified_at
+        description: "Última modificación como timestamp UTC"
+
+  - name: stg_orders
+    description: "Órdenes de Tiendanube recibidas por webhook"
+    columns:
+      - name: order_id
+        description: "ID único de la orden"
+        tests:
+          - unique
+          - not_null
+      - name: total
+        description: "Total de la orden en decimal"
+      - name: created_at
+        description: "Fecha de creación como timestamp"
+
+  - name: stg_order_lines
+    description: "Líneas de producto por orden, con line_total calculado"
+    columns:
+      - name: order_id
+        description: "ID de la orden"
+        tests:
+          - not_null
+      - name: product_code
+        description: "Código EAN del producto, FK a stg_products.code"
+        tests:
+          - not_null
+      - name: line_total
+        description: "Total de la línea = quantity * unit_price"
