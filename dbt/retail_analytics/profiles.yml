@@ -3,8 +3,7 @@ retail_analytics:
   outputs:
     dev:
       type: duckdb
-      path: "data/retail_analytics.duckdb"
+      # Relativo a dbt/retail_analytics (desde donde se corre dbt). Se puede
+      # sobrescribir con una ruta absoluta en DUCKDB_PATH.
+      path: "{{ env_var('DUCKDB_PATH', '../../data/retail_analytics.duckdb') }}"
       threads: 4
-      extensions:
-        - httpfs   # necesario para leer Parquet remoto de Open Food Facts
-        - parquet

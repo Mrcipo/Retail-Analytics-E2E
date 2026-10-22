@@ -11,7 +11,7 @@ Pipeline E2E de analítica retail: ingesta → DuckDB → dbt → Airflow.
 | Transformaciones | dbt-core 1.8.7 + dbt-duckdb 1.8.3 |
 | API de ingesta | FastAPI 0.115.0 + Uvicorn |
 | Procesamiento | Polars 1.7.1, Pandas 2.2.2, PyArrow 17.0.0 |
-| Orquestación | Apache Airflow (DAGs en `airflow/dags/`) |
+| Orquestación | Apache Airflow (planificado, `airflow/dags/` aún no existe) |
 | Entorno virtual | `venv/` — activar con `venv\Scripts\activate` |
 
 ## Estructura del proyecto
@@ -27,11 +27,14 @@ api/
   main.py                 # FastAPI app
   routers/webhooks.py     # POST /webhooks/tiendanube (bronze layer JSON)
 dbt/retail_analytics/
-  profiles.yml            # target: dev → DuckDB en ../../data/retail_analytics.duckdb
+  profiles.yml            # target: dev → DuckDB en $DUCKDB_PATH (default ../../data/retail_analytics.duckdb)
   dbt_project.yml
   models/                 # stg_ / int_ / fact_ / dim_ / mart_
   snapshots/              # SCD Type 2
-airflow/dags/             # DAGs de orquestación
+scripts/
+  create_sample_db.py     # raw.* sintético para probar dbt sin descargas
+tests/                    # pytest (API de webhooks, landing de órdenes)
+airflow/dags/             # DAGs de orquestación (pendiente)
 data/
   retail_analytics.duckdb
   raw/                    # datos crudos (no commitear)
@@ -118,6 +121,13 @@ python extraction/afip_ingest.py
 # Correr ingesta Open Food Facts
 python extraction/openfoodfacts_ingest.py
 
+# Tests unitarios
+pytest
+
+# Base de ejemplo + dbt build (lo mismo que corre el CI)
+DUCKDB_PATH=$PWD/data/sample.duckdb python -m scripts.create_sample_db
+cd dbt/retail_analytics && DUCKDB_PATH=../../data/sample.duckdb DBT_PROFILES_DIR=. dbt build
+
 # Validar DAG de Airflow (sin import errors)
 python airflow/dags/<dag>.py
 ```
@@ -133,7 +143,7 @@ DUCKDB_PATH=./data/retail_analytics.duckdb
 
 - Fase 1 (setup): completada.
 - Fase 2 (ingesta): en curso — AFIP y Tiendanube funcionando; Open Food Facts activo.
-- Fase 3 (dbt): pendiente.
+- Fase 3 (dbt): staging hecho (4 modelos + tests); marts y snapshots pendientes.
 - Fase 4 (Airflow): pendiente.
 
 ## Agentes disponibles

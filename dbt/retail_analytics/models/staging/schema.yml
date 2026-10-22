@@ -46,12 +46,18 @@ models:
     description: "Líneas de producto por orden, con line_total calculado"
     columns:
       - name: order_id
-        description: "ID de la orden"
+        description: "ID de la orden, FK a stg_orders.order_id"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
       - name: product_code
         description: "Código EAN del producto, FK a stg_products.code"
         tests:
           - not_null
+          - relationships:
+              to: ref('stg_products')
+              field: code
       - name: line_total
         description: "Total de la línea = quantity * unit_price"
